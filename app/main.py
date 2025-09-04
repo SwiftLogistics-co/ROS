@@ -3,18 +3,28 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 import uvicorn
 import os
-from dotenv import load_dotenv
+
+# Try to import dotenv, but don't fail if it's not available
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    print("python-dotenv not installed, using system environment variables")
 
 from app.api.v1.api import api_router
 from app.core.config import settings
-from app.db.database import engine
-from app.db import models
 
-# Load environment variables
-load_dotenv()
-
-# Create database tables
-models.Base.metadata.create_all(bind=engine)
+# Try to import database components, but don't fail if not available
+try:
+    from app.db.database import engine
+    from app.db import models
+    # Create database tables
+    models.Base.metadata.create_all(bind=engine)
+    print("Database tables created successfully")
+except ImportError:
+    print("Database components not available, running without database")
+except Exception as e:
+    print(f"Database setup failed: {e}")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
