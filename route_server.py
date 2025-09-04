@@ -293,4 +293,5 @@ if __name__ == "__main__":
     print("📚 Documentation: http://localhost:8000/docs")
     print("🩺 Health Check: http://localhost:8000/health")
     print()
-    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
+    # Use import string format for reload mode to avoid warning
+    uvicorn.run("route_server:app", host="127.0.0.1", port=8000, reload=True)
