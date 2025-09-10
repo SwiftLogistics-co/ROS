@@ -157,6 +157,33 @@ class OptimizationResult(BaseModel):
     optimization_time: float  # seconds taken to optimize
 
 
+# Coordinate-based Route Optimization Schemas
+class Coordinate(BaseModel):
+    lat: float
+    lng: float
+
+
+class OrderItem(BaseModel):
+    order_id: int
+    address: str
+    coordinate: Coordinate
+
+
+class OrdersContainer(BaseModel):
+    order: List[OrderItem]
+
+
+class CoordinateOptimizationRequest(BaseModel):
+    response: dict  # Contains the nested structure
+
+
+class OptimizedRouteResponse(BaseModel):
+    status: str
+    message: str
+    optimization_summary: dict
+    optimized_route: dict
+
+
 # Response Schemas
 class ResponseMessage(BaseModel):
     message: str
